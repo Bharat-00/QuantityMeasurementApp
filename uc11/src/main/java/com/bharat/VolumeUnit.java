@@ -1,11 +1,10 @@
 package com.bharat;
-public enum LengthUnit implements IMeasurable {
-    FEET(1.0),
-    INCHES(1.0 / 12.0),
-    YARDS(3.0),
-    CENTIMETERS(1.0 / 30.48);
+public enum VolumeUnit implements IMeasurable {
+    LITRE(1.0),          // base unit
+    MILLILITRE(0.001),   // 1 mL = 0.001 L
+    GALLON(3.78541);     // 1 gallon ≈ 3.78541 L
     private final double conversionFactor;
-    LengthUnit(double conversionFactor) {
+    VolumeUnit(double conversionFactor) {
         this.conversionFactor = conversionFactor;
     }
     @Override

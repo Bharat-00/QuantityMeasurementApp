@@ -55,15 +55,12 @@ public class Quantity<U extends IMeasurable> {
         if (obj == null || getClass() != obj.getClass())
             return false;
         Quantity<?> other = (Quantity<?>) obj;
-        // Prevent cross category comparison
-        if (!this.unit.getClass().equals(other.unit.getClass()))
+        if (this.unit.getClass() != other.unit.getClass())
             return false;
-        double base1 = this.unit.convertToBaseUnit(this.value);
-        double base2 = other.unit.convertToBaseUnit(other.value);
-        // Normalize values to avoid floating precision issues
-        base1 = Math.round(base1 * 1000000.0) / 1000000.0;
-        base2 = Math.round(base2 * 1000000.0) / 1000000.0;
-        return Double.compare(base1, base2) == 0;
+        double a = this.unit.convertToBaseUnit(this.value);
+        double b = other.unit.convertToBaseUnit(other.value);
+        double EPSILON = 0.0001;
+        return Math.abs(a - b) < EPSILON;
     }
     @Override
     public int hashCode() {
