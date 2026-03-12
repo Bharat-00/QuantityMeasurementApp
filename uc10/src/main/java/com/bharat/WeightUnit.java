@@ -1,22 +1,26 @@
 package com.bharat;
-public enum LengthUnit {
-    FEET(1.0),                 // base unit
-    INCHES(1.0 / 12.0),
-    YARDS(3.0),
-    CENTIMETERS(1.0 / 30.48);
+public enum WeightUnit implements IMeasurable {
+    KILOGRAM(1.0),
+    GRAM(0.001),
+    POUND(0.453592);
     private final double conversionFactor;
-    LengthUnit(double conversionFactor) {
+    WeightUnit(double conversionFactor) {
         this.conversionFactor = conversionFactor;
     }
+    @Override
     public double getConversionFactor() {
         return conversionFactor;
     }
-    // Convert value in this unit → base unit (FEET)
+    @Override
     public double convertToBaseUnit(double value) {
         return value * conversionFactor;
     }
-    // Convert base unit (FEET) → this unit
+    @Override
     public double convertFromBaseUnit(double baseValue) {
         return baseValue / conversionFactor;
+    }
+    @Override
+    public String getUnitName() {
+        return name();
     }
 }
