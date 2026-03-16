@@ -1,6 +1,6 @@
 package com.bharat;
 public class QuantityMeasurementApp{
-    //Subtraction Demo
+        //Subtraction
     public static <U extends IMeasurable> void demonstrateSubtraction(
             Quantity<U> q1,
             Quantity<U> q2) {
@@ -16,7 +16,7 @@ public class QuantityMeasurementApp{
         System.out.println("Input: " + q1 + " - " + q2 +
                 " (" + targetUnit + ") → Output: " + result);
     }
-    //Division Demo
+    //Division 
     public static <U extends IMeasurable> void demonstrateDivision(
             Quantity<U> q1,
             Quantity<U> q2) {
