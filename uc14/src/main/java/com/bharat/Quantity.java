@@ -17,7 +17,7 @@ public class Quantity<U extends IMeasurable> {
     public U getUnit() {
         return unit;
     }
-    // Arithmetic Operation Enum
+    //Arithmetic Operation Enum
     private enum ArithmeticOperation {
         ADD {
             public double compute(double a, double b) {
@@ -38,7 +38,7 @@ public class Quantity<U extends IMeasurable> {
         };
         public abstract double compute(double a, double b);
     }
-    // Centralized Validation
+    //Centralized Validation
     private void validateArithmeticOperands(Quantity<U> other, U targetUnit, boolean targetRequired) {
         if (other == null)
             throw new IllegalArgumentException("Other quantity cannot be null");
@@ -49,13 +49,16 @@ public class Quantity<U extends IMeasurable> {
         if (targetRequired && targetUnit == null)
             throw new IllegalArgumentException("Target unit cannot be null");
     }
-    // Core Arithmetic Engine
-    private double performBaseArithmetic(Quantity<U> other, ArithmeticOperation operation) {
+    //Core Arithmetic Engine
+    private double performBaseArithmetic(Quantity<U> other,
+            ArithmeticOperation operation) {
+        this.unit.validateOperationSupport(operation.name());
+        other.unit.validateOperationSupport(operation.name());
         double base1 = this.unit.convertToBaseUnit(this.value);
         double base2 = other.unit.convertToBaseUnit(other.value);
         return operation.compute(base1, base2);
     }
-    // ADDITION
+    //ADDITION
     public Quantity<U> add(Quantity<U> other) {
         return add(other, this.unit);
     }
@@ -65,7 +68,7 @@ public class Quantity<U extends IMeasurable> {
         double result = targetUnit.convertFromBaseUnit(baseResult);
         return new Quantity<>(result, targetUnit);
     }
-    // SUBTRACTION
+    //SUBTRACTION
     public Quantity<U> subtract(Quantity<U> other) {
         return subtract(other, this.unit);
     }
@@ -75,20 +78,20 @@ public class Quantity<U extends IMeasurable> {
         double result = targetUnit.convertFromBaseUnit(baseResult);
         return new Quantity<>(result, targetUnit);
     }
-    // DIVISION
+    //DIVISION
     public double divide(Quantity<U> other) {
         validateArithmeticOperands(other, null, false);
         return performBaseArithmetic(other, ArithmeticOperation.DIVIDE);
     }
-    // CONVERSION
+    //CONVERSION
     public Quantity<U> convertTo(U targetUnit) {
         if (targetUnit == null)
             throw new IllegalArgumentException("Target unit cannot be null");
         double base = unit.convertToBaseUnit(value);
-        double converted = targetUnit.convertFromBaseUnit(base);
-        return new Quantity<>(converted, targetUnit);
+        double result = targetUnit.convertFromBaseUnit(base);
+        return new Quantity<>(result, targetUnit);
     }
-    // EQUALS
+    //EQUALS
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
